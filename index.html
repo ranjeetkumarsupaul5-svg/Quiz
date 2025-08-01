@@ -1,83 +1,193 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
-  <meta charset="UTF-8">
-  <title>Quiz App</title>
-  <style>body {
-  font-family: Arial;
-  background: #f3f3f3;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
+  <meta charset="UTF-8" />
+  <title>Ranjeet's Quiz App</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #e3f2fd, #bbdefb);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+   
 
-.quiz-container {
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  width: 90%;
-  max-width: 400px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
 
-#options button {
-  display: block;
-  margin: 10px 0;
-  padding: 10px;
-  width: 100%;
-  background-color: #eee;
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
-}
+    .quiz-container {
+      background: #fff;
+      padding: 25px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      text-align: center;
+    }
 
-#options button:hover {
-  background-color: #d1e7dd;
-}
+    h2 {
+      margin-bottom: 20px;
+    }
 
-#next {
-  margin-top: 20px;
-  padding: 10px;
-  width: 100%;
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
-}
+    #options button {
+      display: block;
+      margin: 10px 0;
+      padding: 12px;
+      width: 100%;
+      font-size: 16px;
+      background-color: #f0f0f0;
+      border: 2px solid #ddd;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: background 0.3s, transform 0.2s;
+    }
 
-#score-box {
-  margin-top: 20px;
+    #options button:hover {
+      background-color: #e0f7fa;
+      transform: scale(1.02);
+    }
+
+    #options button.correct {
+      background-color: #8bc34a;
+      color: white;
+      border-color: #689f38;
+    }
+
+    #options button.wrong {
+      background-color: #f44336;
+      color: white;
+      border-color: #d32f2f;
+    }
+
+    #next {
+      margin-top: 20px;
+      padding: 12px;
+      width: 100%;
+      background-color: #1976d2;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      border-radius: 6px;
+    }
+
+    #score-box {
+      margin-top: 15px;
+      font-weight: bold;
+      color: #333;
+    }
+    
+    #timer {
+      margin-top: 10px;
+      font-weight: bold;
+      color: #d32f2f;
+    }
+
+    #timer.warning {
+      color: red;
+    }
+    #clock {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 16px;
   font-weight: bold;
+  color: #333;
+  background: #f0f0f0;
+  padding: 5px 10px;
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.2);
 }
-</style>
+#top-right {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  text-align: right;
+}
+
+#clock {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  background: #f0f0f0;
+  padding: 5px 10px;
+  border-radius: 8px 8px 0 0;
+  box-shadow: 0 0 5px rgba(0,0,0,0.2);
+}
+
+#timer {
+  font-size: 14px;
+  font-weight: bold;
+  color: #d32f2f;
+  background: #ffecec;
+  padding: 4px 10px;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}
+
+#timer.warning {
+  color: red;
+}
+#clock {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  background: #f0f0f0;
+  padding: 5px 10px;
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.2);
+}
+
+#timer {
+  position: absolute;
+  top: 10px;
+  left: 20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #d32f2f;
+  background: #ffecec;
+  padding: 5px 10px;
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.2);
+}
+
+
+
+  </style>
 </head>
 <body>
+  <div id="clock"></div>      <!-- Right corner -->
+  <div id="timer"></div>      <!-- Left corner -->
+
   <div class="quiz-container">
-    <h2 id="question">Question Text</h2>
+    <h2 id="question">प्रश्न लोड हो रहा है...</h2>
     <div id="options"></div>
     <button id="next">Next</button>
     <div id="score-box"></div>
   </div>
+
   <script>
     const quizData = [
-  {
-    question: "बिहार की राजधानी कौन सी है?",
-    options: ["गया", "पटना", "मुजफ्फरपुर", "दरभंगा"],
-    answer: "पटना"
-  },
-  {
-    question: "बिहार पुलिस की स्थापना कब हुई थी?",
-    options: ["1861", "1947", "2000", "1950"],
-    answer: "1861"
-  },
-  {
-    question: "बिहार के पहले मुख्यमंत्री कौन थे?",
-    options: ["लालू प्रसाद यादव", "नीतीश कुमार", "श्रीकृष्ण सिंह", "जयप्रकाश नारायण"],
-    answer: "श्रीकृष्ण सिंह"
-  },
-  {
+      {
+        question: "बिहार की राजधानी कौन सी है?",
+        options: ["गया", "पटना", "मुजफ्फरपुर", "दरभंगा"],
+        answer: "पटना"
+      },
+      {
+        question: "बिहार पुलिस की स्थापना कब हुई थी?",
+        options: ["1861", "1947", "2000", "1950"],
+        answer: "1861"
+      },
+      {
+        question: "बिहार के पहले मुख्यमंत्री कौन थे?",
+        options: ["लालू प्रसाद यादव", "नीतीश कुमार", "श्रीकृष्ण सिंह", "जयप्रकाश नारायण"],
+        answer: "श्रीकृष्ण सिंह"
+      },
+      {
     question: "बिहार की राजभाषा क्या है?",
     options: ["संस्कृत", "अंग्रेज़ी", "मैथिली", "हिंदी"],
     answer: "हिंदी"
@@ -268,55 +378,131 @@
     options: ["112", "100", "101", "108"],
     answer: "112"
   }
+    ];
 
-];
+    let currentQuestion = 0;
+    let score = 0;
+    let wrong = 0;
 
-let currentQuestion = 0;
-let score = 0;
+    let timeLeft = 30;
+    let timerInterval;
+    let answered = false;
 
-const questionEl = document.getElementById("question");
-const optionsEl = document.getElementById("options");
-const nextBtn = document.getElementById("next");
-const scoreBox = document.getElementById("score-box");
+    const questionEl = document.getElementById("question");
+    const optionsEl = document.getElementById("options");
+    const nextBtn = document.getElementById("next");
+    const scoreBox = document.getElementById("score-box");
+    const timerEl = document.getElementById("timer");
 
-function loadQuestion() {
-  const qData = quizData[currentQuestion];
-  questionEl.textContent = qData.question;
-  optionsEl.innerHTML = "";
+    function loadQuestion() {
+       clearInterval(timerInterval);
+      timeLeft = 30;
+      answered = false;
 
-  qData.options.forEach(opt => {
-    const btn = document.createElement("button");
-    btn.textContent = opt;
-    btn.onclick = () => selectOption(btn, qData.answer);
-    optionsEl.appendChild(btn);
-  });
-}
+      const qData = quizData[currentQuestion];
+      questionEl.textContent = `Q${currentQuestion + 1}: ${qData.question}`;
+      optionsEl.innerHTML = "";
 
-function selectOption(button, correct) {
-  const selected = button.textContent;
-  if (selected === correct) {
-    button.style.backgroundColor = "#8bc34a"; // green
-    score++;
-  } else {
-    button.style.backgroundColor = "#f44336"; // red
-  }
+      qData.options.forEach(opt => {
+        const btn = document.createElement("button");
+        btn.textContent = opt;
+        btn.onclick = () => selectOption(btn, qData.answer);
+        optionsEl.appendChild(btn);
+      });
 
-  Array.from(optionsEl.children).forEach(btn => btn.disabled = true);
-}
+      updateScore();
+      startTimer();
 
-nextBtn.addEventListener("click", () => {
-  currentQuestion++;
-  if (currentQuestion < quizData.length) {
+    }
+
+    function selectOption(button, correctAnswer) {
+      const buttons = Array.from(optionsEl.children);
+
+      buttons.forEach(btn => {
+        btn.disabled = true;
+        if (btn.textContent === correctAnswer) {
+          btn.classList.add("correct");
+        }
+      });
+
+      if (button.textContent !== correctAnswer) {
+        button.classList.add("wrong");
+        wrong++;
+      } else {
+        score++;
+      }
+
+      updateScore();
+    }
+
+    function updateScore() {
+      scoreBox.innerHTML = `✅ Right: ${score} | ❌ Wrong: ${wrong} | Total: ${score + wrong}`;
+    }
+    
+    function startTimer() {
+      updateTimerDisplay();
+      timerInterval = setInterval(() => {
+        timeLeft--;
+        updateTimerDisplay();
+        if (timeLeft === 0) {
+          clearInterval(timerInterval);
+          autoSelectCorrect();
+        }
+      }, 1000);
+    }
+
+    function updateTimerDisplay() {
+      timerEl.textContent = `⏱️ ${timeLeft} सेकंड शेष`;
+      timerEl.classList.toggle("warning", timeLeft <= 10);
+    }
+
+    function autoSelectCorrect() {
+      if (answered) return;
+      const qData = quizData[currentQuestion];
+      const buttons = Array.from(optionsEl.children);
+      buttons.forEach(btn => {
+        btn.disabled = true;
+        if (btn.textContent === qData.answer) {
+          btn.classList.add("correct");
+        }
+      });
+      wrong++;
+      updateScore();
+    }
+
+    nextBtn.addEventListener("click", () => {
+      currentQuestion++;
+      if (currentQuestion < quizData.length) {
+        loadQuestion();
+      } else {
+         clearInterval(timerInterval);
+        questionEl.textContent = "🎉 क्विज पूरा हो गया!";
+        optionsEl.innerHTML = "";
+        timerEl.style.display = "none";
+        nextBtn.style.display = "none";
+        scoreBox.innerHTML = `आपका अंतिम स्कोर: ✅ ${score} सही | ❌ ${wrong} गलत | कुल प्रश्न: ${quizData.length}`;
+      }
+    });
+
     loadQuestion();
-  } else {
-    questionEl.textContent = "Quiz Completed!";
-    optionsEl.innerHTML = "";
-    nextBtn.style.display = "none";
-    scoreBox.textContent = `Your Score: ${score} / ${quizData.length}`;
-  }
-});
+    function updateClock() {
+  const now = new Date();
+  let hrs = now.getHours();
+  let mins = now.getMinutes();
+  let secs = now.getSeconds();
+  const ampm = hrs >= 12 ? 'PM' : 'AM';
 
-loadQuestion();
+  hrs = hrs % 12;
+  hrs = hrs ? hrs : 12;
+  mins = mins < 10 ? '0' + mins : mins;
+  secs = secs < 10 ? '0' + secs : secs;
+
+  const timeStr = `${hrs}:${mins}:${secs} ${ampm}`;
+  document.getElementById('clock').textContent = timeStr;
+}
+
+setInterval(updateClock, 1000);
+updateClock(); // Run once immediately
 
   </script>
 </body>
